@@ -1,0 +1,21 @@
+name: Validate Device Files
+
+on:
+  pull_request:
+    paths:
+      - "devices/**/*.md"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate frontmatter on changed device files
+        run: |
+          python scripts/validate-devices.py

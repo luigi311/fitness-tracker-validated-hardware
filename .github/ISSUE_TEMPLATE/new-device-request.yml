@@ -1,0 +1,69 @@
+name: New Device Request
+description: Request a device to be added to the compatibility list
+title: "[Device Request] Brand Model"
+labels: ["device-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping grow the hardware list! Fill in what you know — not every field is required for a request.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Heart Rate Monitor
+        - Foot Pod
+        - Bike Trainer
+        - Treadmill
+    validations:
+      required: true
+
+  - type: input
+    id: brand
+    attributes:
+      label: Brand
+      placeholder: e.g. Polar
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      placeholder: e.g. H10
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: protocols
+    attributes:
+      label: Protocols supported
+      options:
+        - label: Bluetooth LE
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Have you tested this device with the app?
+      options:
+        - "Yes — it works great"
+        - "Yes — it works with issues"
+        - "No — I'm requesting someone else test it"
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Known issues
+      placeholder: Any firmware quirks, pairing tips, or limitations worth documenting.
+
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Would you like to open the PR yourself?
+      options:
+        - label: "Yes, I'll submit a PR with the device file"
+        - label: "No, I'd like a maintainer to add it"
