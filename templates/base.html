@@ -6,6 +6,9 @@
   <title>{% block title %}{{ config.title }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock %}">
   <link rel="stylesheet" href="{{ get_url(path='css/style.css') }}">
+  {% if config.extra.head_extra %}
+    {{ config.extra.head_extra | safe }}
+  {% endif %}
   {% block head %}{% endblock %}
 </head>
 <body>
