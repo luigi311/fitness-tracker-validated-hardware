@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/device.schema.json",
+  "title": "Device",
+  "description": "A hardware device entry verified for use with the Fitness Tracker app.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "manufacturer",
+    "category",
+    "status",
+    "connectivity",
+    "verified_version",
+    "verified_date",
+    "verified_by"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Human-readable device name"
+    },
+    "manufacturer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "heart-rate",
+        "footpods",
+        "cycling-trainers",
+        "cycling-sensors"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "fully-supported",
+        "partial",
+        "experimental",
+        "unsupported"
+      ]
+    },
+    "connectivity": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["ble"]
+      }
+    },
+    "verified_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?(-[a-zA-Z0-9.-]+)?$",
+      "description": "Semver-ish app version, e.g. 1.4.2 or 1.5.0-beta1"
+    },
+    "verified_date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 date, YYYY-MM-DD"
+    },
+    "verified_by": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50,
+      "pattern": "^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$",
+      "description": "GitHub username of the verifier"
+    },
+    "features": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 50 }
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "manufacturer_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    }
+  }
+}

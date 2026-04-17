@@ -1,0 +1,11 @@
+name = "Stryd Next Gen"
+manufacturer = "Stryd"
+category = "footpods"
+status = "fully-supported"
+connectivity = ["ble"]
+verified_version = "3.0.0"
+verified_date = "2026-04-17"
+verified_by = "Luigi311"
+features = ["pace", "distance", "cadence", "power"]
+notes = "Running power is straight from the sensor when outdoors and for indoors is shifted manually so not 1-1 with official stryd app"
+manufacturer_url = "https://www.stryd.com"

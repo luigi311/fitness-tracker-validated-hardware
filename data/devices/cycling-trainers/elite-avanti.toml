@@ -1,0 +1,11 @@
+name = "Elite Avanti"
+manufacturer = "Elite"
+category = "cycling-trainers"
+status = "fully-supported"
+connectivity = ["ble"]
+verified_version = "3.0.0"
+verified_date = "2026-04-17"
+verified_by = "Luigi311"
+features = ["power", "cadence", "speed", "ftms-control", "erg-mode"]
+notes = "FTMS control works for ERG and resistance modes."
+manufacturer_url = "https://www.elite-it.com/en/home-trainers/smart-trainers/avanti"

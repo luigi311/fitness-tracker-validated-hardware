@@ -1,9 +1,12 @@
-name: Validate Device Files
+name: Validate device submissions
 
 on:
   pull_request:
     paths:
-      - "devices/**/*.md"
+      - "data/devices/**"
+      - "schemas/device.schema.json"
+      - "scripts/validate_devices.py"
+      - "scripts/build_manifest.py"
 
 jobs:
   validate:
@@ -11,11 +14,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
 
-      - name: Validate frontmatter on changed device files
-        run: |
-          python scripts/validate-devices.py
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install Python deps
+        run: uv sync --frozen --no-dev
+
+      - name: Validate device files
+        run: uv run scripts/validate_devices.py
+
+      - name: Smoke-test manifest build
+        run: uv run scripts/build_manifest.py
+
+      - name: Install zola
+        uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.19.2
+
+      - name: Smoke-test site build
+        run: zola build
