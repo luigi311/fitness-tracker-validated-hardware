@@ -1,12 +1,8 @@
-name: Validate device submissions
+name: Validate
 
 on:
+  push:
   pull_request:
-    paths:
-      - "data/devices/**"
-      - "schemas/device.schema.json"
-      - "scripts/validate_devices.py"
-      - "scripts/build_manifest.py"
 
 jobs:
   validate:
