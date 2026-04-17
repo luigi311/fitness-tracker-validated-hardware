@@ -1,0 +1,11 @@
+name = "Polar H10"
+manufacturer = "Polar"
+category = "heart-rate"
+status = "fully-supported"
+connectivity = ["ble"]
+verified_version = "3.0.0"
+verified_date = "2026-04-17"
+verified_by = "Luigi311"
+features = ["heart-rate"]
+notes = "Dual broadcast works reliably."
+manufacturer_url = "https://www.polar.com/en/sensors/h10-heart-rate-sensor"

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Devices — {{ config.title }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ get_url(path='css/devices.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="devices-page">
+  <header class="devices-header">
+    <h1>Supported Devices</h1>
+    <p class="lede">
+      Hardware verified against the {{ config.extra.app_name }} app by community contributors.
+      Don't see your device? <a href="{{ get_url(path='/docs/contributing/') }}">Add it</a>.
+    </p>
+  </header>
+
+  <div class="devices-controls">
+    <input
+      type="search"
+      id="device-search"
+      class="search-input"
+      placeholder="Search by name, manufacturer, or feature…"
+      aria-label="Search devices"
+    >
+
+    <div class="filter-group" role="group" aria-label="Filter by category">
+      <span class="filter-label">Category:</span>
+      <button class="filter-chip is-active" data-filter-type="category" data-filter-value="all">All</button>
+      <button class="filter-chip" data-filter-type="category" data-filter-value="heart-rate">Heart Rate</button>
+      <button class="filter-chip" data-filter-type="category" data-filter-value="footpods">Footpods</button>
+      <button class="filter-chip" data-filter-type="category" data-filter-value="cycling-trainers">Cycling Trainers</button>
+      <button class="filter-chip" data-filter-type="category" data-filter-value="cycling-sensors">Cycling Sensors</button>
+    </div>
+
+    <div class="filter-group" role="group" aria-label="Filter by status">
+      <span class="filter-label">Status:</span>
+      <button class="filter-chip is-active" data-filter-type="status" data-filter-value="all">All</button>
+      <button class="filter-chip" data-filter-type="status" data-filter-value="fully-supported">Fully supported</button>
+      <button class="filter-chip" data-filter-type="status" data-filter-value="partial">Partial</button>
+      <button class="filter-chip" data-filter-type="status" data-filter-value="experimental">Experimental</button>
+      <button class="filter-chip" data-filter-type="status" data-filter-value="unsupported">Unsupported</button>
+    </div>
+
+    <div class="filter-group" role="group" aria-label="Filter by connectivity">
+      <span class="filter-label">Connectivity:</span>
+      <button class="filter-chip is-active" data-filter-type="connectivity" data-filter-value="all">All</button>
+      <button class="filter-chip" data-filter-type="connectivity" data-filter-value="ble">BLE</button>
+    </div>
+  </div>
+
+  <p class="results-count" id="results-count" aria-live="polite"></p>
+
+  <div class="devices-grid" id="devices-grid">
+    {# Render every device server-side so the page works without JavaScript. #}
+    {# JS only filters/hides cards client-side. #}
+    {% set manifest = load_data(path="data/devices-manifest.toml", required=false) %}
+    {% if manifest %}
+      {% for device in manifest.devices %}
+        <article
+          class="device-card"
+          data-name="{{ device.name | lower }}"
+          data-manufacturer="{{ device.manufacturer | lower }}"
+          data-features="{{ device.features | default(value=[]) | join(sep=' ') | lower }}"
+          data-category="{{ device.category }}"
+          data-status="{{ device.status }}"
+          data-connectivity="{{ device.connectivity | join(sep=' ') }}"
+        >
+          <div class="device-card-header">
+            <h2 class="device-name">{{ device.name }}</h2>
+            <span class="device-manufacturer">{{ device.manufacturer }}</span>
+          </div>
+
+          <div class="device-meta">
+            <span class="status-badge status-{{ device.status }}">
+              {{ device.status | replace(from="-", to=" ") | title }}
+            </span>
+            <span class="category-badge">{{ device.category | replace(from="-", to=" ") | title }}</span>
+          </div>
+
+          <dl class="device-details">
+            <dt>Connectivity</dt>
+            <dd>{{ device.connectivity | join(sep=", ") | upper }}</dd>
+
+            {% if device.features %}
+            <dt>Features</dt>
+            <dd>{{ device.features | join(sep=", ") }}</dd>
+            {% endif %}
+
+            <dt>Verified</dt>
+            <dd>v{{ device.verified_version }} on {{ device.verified_date }}</dd>
+          </dl>
+
+          {% if device.notes %}
+          <p class="device-notes">{{ device.notes }}</p>
+          {% endif %}
+
+          <footer class="device-card-footer">
+            {% if device.manufacturer_url %}
+              <a href="{{ device.manufacturer_url }}" rel="noopener nofollow" class="device-link">Product page →</a>
+            {% endif %}
+            <a href="{{ config.extra.repo_url }}/blob/main/data/devices/{{ device.category }}/{{ device.slug }}.toml"
+               class="device-source" rel="noopener">View source</a>
+          </footer>
+        </article>
+      {% endfor %}
+    {% else %}
+      <p class="empty-state">
+        No device manifest found. Run <code>python scripts/build_manifest.py</code> to generate it.
+      </p>
+    {% endif %}
+  </div>
+
+  <p class="empty-state" id="no-results" hidden>
+    No devices match your filters. Try clearing them, or
+    <a href="{{ get_url(path='/docs/contributing/') }}">submit the device you're looking for</a>.
+  </p>
+</section>
+
+<script src="{{ get_url(path='js/devices.js') }}" defer></script>
+{% endblock %}

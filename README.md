@@ -1,130 +1,59 @@
-# Fitness Tracker — Hardware Compatibility List
+# Fitness Tracker — Supported Devices
 
-This repository tracks all hardware devices that have been tested with [Fitness Tracker](https://github.com/luigi311/fitness-tracker). It is intentionally separate from the main repo to keep device contributions focused and easy to review.
+Community-maintained catalog of hardware verified with the Fitness Tracker Linux fitness app.
+The site is built with [Zola](https://www.getzola.org/) and deployed to GitHub Pages.
 
-**Don't see your device?** It takes ~5 minutes to [add it](#contributing).
+**Live site:** https://fitness-tracker.luigi311.com
 
----
+## Adding a device
 
-## 📦 Supported Categories
+The fast path: open a [New Device issue](../../issues/new?template=new-device.yml).
 
-| Category | Devices |
-|----------|---------|
-| [❤️ Heart Rate Monitors](devices/heart-rate-monitors/) | Chest straps, armbands, and optical sensors |
-| [👟 Foot Pods](devices/foot-pods/) | Cadence/Speed/Distance/Power foot pods |
-| [🚴 Bike Trainers](devices/bike-trainers/) | Smart trainers with power and speed support |
+The standard path: open a pull request adding one TOML file under `data/devices/<category>/`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full schema and rules.
 
-Each category has its own `README.md` with a full device table that is **automatically regenerated** whenever a device file is merged.
+## Local development
 
----
+You need [Zola](https://www.getzola.org/documentation/getting-started/installation/)
+and [UV Python](https://docs.astral.sh/uv/getting-started/installation/).
 
-## ✅ Status Legend
+```sh
+# 1. Install Python deps (one-time)
+uv sync --frozen
 
-| Badge | Meaning |
-|-------|---------|
-| ✅ Validated | Tested by a maintainer on the latest stable app release |
-| 🟡 Community | Reported working by community members — not officially verified |
-| ❓ Untested | Device likely works but has not been confirmed |
-| ❌ Broken | Known issues exist; contributions and fixes welcome |
+# 2. Validate every device file
+uv run scripts/validate_devices.py
 
----
+# 3. Generate the device manifest the templates load
+uv run scripts/build_manifest.py
 
-## 🤝 Contributing
-
-Contributions are welcome and encouraged! There are two ways to help:
-
-### Option A — Open a PR yourself (preferred)
-
-1. Fork this repo
-2. Create a new file at the correct path:
-   ```
-   devices/<category>/<brand>/<model>.md
-   ```
-   For example: `devices/heart-rate-monitors/polar/h10.md`
-
-3. Use this template for your file:
-   ```markdown
-   ---
-   name: Polar H10
-   brand: Polar
-   model: H10
-   category: heart-rate-monitors
-   protocols: [Bluetooth LE]
-   status: validated
-   tested_versions: ["2.0"]
-   contributors: ["@Luigi311"]
-   last_verified: 2026-03-02
-   ---
-
-   ## Known Issues
-   - If weather and/or skin is dry, it might require to soak the strap in water before use.
-   ```
-
-4. Run `python scripts/generate-tables.py` to update the category table locally
-5. Open a PR — the CI will validate your file automatically
-
-> **Filename rules:** lowercase, hyphens only, `.md` extension. E.g. `hrm-pro-plus.md` ✅ — `HRM Pro Plus.md` ❌
-
-### Option B — Request a device
-
-Not able to submit a PR? [Open a Device Request issue](../../issues/new?template=new-device-request.yml) and a maintainer or community member can add it.
-
----
-
-## 🗂️ Repository Structure
-
-```
-fitness-app-hardware/
-├── README.md                        ← You are here
-├── devices/
-│   ├── heart-rate-monitors/
-│   │   ├── README.md                ← Auto-generated device table
-│   │   └── polar/
-│   │       └── h10.md
-│   ├── foot-pods/
-│   │   ├── README.md
-│   │   └── stryd/
-│   │       └── next-gen.md
-│   └── bike-trainers/
-│       ├── README.md
-│       └── elite/
-│           └── avanti.md
-|
-├── scripts/
-│   ├── generate-tables.py           ← Regenerates category READMEs
-│   └── validate-devices.py          ← Validates frontmatter (used by CI)
-└── .github/
-    ├── ISSUE_TEMPLATE/
-    │   └── new-device-request.yml   ← Structured issue form
-    ├── pull_request_template.md
-    └── workflows/
-        ├── regenerate-tables.yml    ← Auto-runs on merge to main
-        └── validate-devices.yml     ← Validates PRs before merge
+# 4. Serve locally with hot reload
+zola serve
 ```
 
----
+Visit http://127.0.0.1:1111.
 
-## 🔧 Running Scripts Locally
+> **Note:** Zola can't enumerate a directory at template time, so we generate
+> `data/devices-manifest.toml` from all per-device files via `build_manifest.py`.
+> CI runs this automatically; locally, re-run it whenever you add or change a
+> device file.
 
-**Regenerate all category tables:**
-```bash
-python scripts/generate-tables.py
+## Repo layout
+
 ```
-
-**Validate all device files:**
-```bash
-python scripts/validate-devices.py
+config.toml                      Zola config
+content/                         Markdown pages (home, /devices/, /docs/)
+data/
+  devices/<category>/<slug>.toml Source of truth — one file per device
+  devices-manifest.toml          Auto-generated; do not edit
+templates/                       Tera templates
+  devices/list.html              The big one — search + filter UI
+static/css|js/                   Stylesheets and the client-side filter
+schemas/device.schema.json       JSON Schema enforced by CI
+scripts/
+  validate_devices.py            CI-grade validator
+  build_manifest.py              Generates data/devices-manifest.toml
+.github/
+  workflows/validate-devices.yml Validate every PR that touches devices
+  ISSUE_TEMPLATE/new-device.yml  Structured "submit a device" form
 ```
-
-Both scripts require Python 3.8+ and no external dependencies.
-
----
-
-## 🔗 Related
-
-- [Fitness Tracker — Main Repo](https://github.com/luigi311/fitness-tracker)
-- [Open a Device Request](../../issues/new?template=new-device-request.yml)
-
----
-
-_Device tables are auto-generated by CI. To update a device entry, edit its `.md` file directly — not the category `README.md`._
