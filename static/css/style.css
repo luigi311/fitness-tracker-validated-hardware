@@ -79,6 +79,12 @@ pre {
 }
 pre code { background: none; padding: 0; }
 
+.giallo-l {
+  display: inline-block;
+  min-height: 1lh;
+  width: 100%;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
