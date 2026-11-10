@@ -83,6 +83,9 @@ jobs:
       - name: Manifest build
         run: uv run scripts/build_manifest.py
 
+      - name: Fetch app screenshots
+        run: uv run scripts/fetch_screenshots.py
+
       - name: Zola build
         run: zola build
 
@@ -98,4 +101,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # workflow_run has read-only access to the default-branch cache.
+          # Manual runs can populate it; cache export must not block publishing.
+          cache-to: ${{ github.event_name == 'workflow_dispatch' && 'type=gha,mode=max,ignore-error=true' || '' }}

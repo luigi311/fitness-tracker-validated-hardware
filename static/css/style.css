@@ -154,6 +154,48 @@ main { padding: 2.5rem 0 4rem; min-height: 70vh; }
 .prose h2 { font-size: 1.5rem; margin-top: 2.5rem; letter-spacing: -0.015em; }
 .prose h3 { font-size: 1.2rem; margin-top: 2rem; }
 
+/* ---------- App screenshots ---------- */
+.screenshot-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.screenshot-gallery:focus-visible {
+  outline: 2px solid var(--info);
+  outline-offset: 4px;
+}
+.screenshot-card {
+  min-width: 0;
+  margin: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+.screenshot-card a { display: block; }
+.screenshot-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.screenshot-card figcaption {
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .screenshot-gallery {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(80%, 16rem);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.5rem;
+  }
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   border-top: 1px solid var(--border);

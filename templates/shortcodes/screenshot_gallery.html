@@ -1,0 +1,19 @@
+{% set gallery = load_data(path="data/screenshots.toml") %}
+<div class="screenshot-gallery" role="region" aria-label="App screenshots" tabindex="0">
+  {% for screenshot in gallery.screenshots %}
+  {% set image_path = "screenshots/" ~ screenshot.file %}
+  {% set dimensions = get_image_metadata(path="static/" ~ image_path) %}
+  {% set image_url = get_url(path=image_path, cachebust=true) %}
+  <figure class="screenshot-card">
+    <a href="{{ image_url }}"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="View full-size screenshot: {{ screenshot.caption }}">
+      <img src="{{ image_url }}"
+           alt="{{ screenshot.alt }}"
+           width="{{ dimensions.width }}" height="{{ dimensions.height }}"
+           loading="lazy" decoding="async">
+    </a>
+    <figcaption>{{ screenshot.caption }}</figcaption>
+  </figure>
+  {% endfor %}
+</div>

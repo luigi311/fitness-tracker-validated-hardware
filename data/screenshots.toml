@@ -1,0 +1,17 @@
+# Downloaded during site preparation; the gallery serves the local copies.
+source_base_url = "https://raw.githubusercontent.com/luigi311/fitness-tracker/main/docs/screenshots/"
+
+[[screenshots]]
+file = "tracker.png"
+caption = "Choose your session"
+alt = "Fitness Tracker session selection with running, cycling, indoor, outdoor, trainer, and planned workout options."
+
+[[screenshots]]
+file = "workout_trainer.png"
+caption = "Follow a cycling workout"
+alt = "A cycling workout showing the power target, elapsed time, heart rate, cadence, speed, and distance."
+
+[[screenshots]]
+file = "history_comparison.png"
+caption = "Compare your activities"
+alt = "Workout history comparing heart-rate graphs from two recorded activities."
