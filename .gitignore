@@ -3,6 +3,9 @@
 # Zola build output
 public
 
+# App screenshots downloaded during site preparation
+/static/screenshots/
+
 # Python
 __pycache__/
 *.py[cod]

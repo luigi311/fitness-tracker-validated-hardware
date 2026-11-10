@@ -27,6 +27,9 @@ jobs:
       - name: Smoke-test manifest build
         run: uv run scripts/build_manifest.py
 
+      - name: Fetch app screenshots
+        run: uv run scripts/fetch_screenshots.py
+
       - name: Install zola
         uses: taiki-e/install-action@682ce6c3c696a4cd5168a05f98e51aa02b877941 # v2.89.1
         with:

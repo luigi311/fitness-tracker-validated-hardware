@@ -83,6 +83,9 @@ jobs:
       - name: Manifest build
         run: uv run scripts/build_manifest.py
 
+      - name: Fetch app screenshots
+        run: uv run scripts/fetch_screenshots.py
+
       - name: Zola build
         run: zola build
 

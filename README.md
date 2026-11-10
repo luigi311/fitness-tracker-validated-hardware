@@ -29,7 +29,10 @@ uv run scripts/validate_devices.py
 # 3. Generate the device manifest the templates load
 uv run scripts/build_manifest.py
 
-# 4. Serve locally with hot reload
+# 4. Download app screenshots for the gallery
+uv run scripts/fetch_screenshots.py
+
+# 5. Serve locally with hot reload
 zola serve
 ```
 
@@ -40,6 +43,13 @@ Visit http://127.0.0.1:1111.
 > CI runs this automatically; locally, re-run it whenever you add or change a
 > device file.
 
+Before a production build, run both preparation scripts above, then `zola build`.
+CI runs these steps automatically. Screenshot sources and captions are configured
+in `data/screenshots.toml`. Downloads go into the ignored `static/screenshots/`
+directory and are included in the built site, so visitors load them from this
+website. Rerun the download script to refresh screenshots from the app repository.
+Image dimensions and cache-busting URLs are generated from the downloaded files.
+
 ## Repo layout
 
 ```
@@ -48,13 +58,16 @@ content/                         Markdown pages (home, /devices/, /docs/)
 data/
   devices/<category>/<slug>.toml Source of truth — one file per device
   devices-manifest.toml          Auto-generated; do not edit
+  screenshots.toml              App screenshot sources, captions, and alt text
 templates/                       Tera templates
   devices/list.html              The big one — search + filter UI
 static/css|js/                   Stylesheets and the client-side filter
+static/screenshots/              Downloaded app screenshots; not committed
 schemas/device.schema.json       JSON Schema enforced by CI
 scripts/
   validate_devices.py            CI-grade validator
   build_manifest.py              Generates data/devices-manifest.toml
+  fetch_screenshots.py           Downloads app screenshots before build or preview
 .github/
   workflows/validate-devices.yml Validate every PR that touches devices
   ISSUE_TEMPLATE/new-device.yml  Structured "submit a device" form

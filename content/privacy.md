@@ -5,7 +5,7 @@ description = "How Fitness Tracker handles workout data, optional integrations, 
 
 # Privacy Policy
 
-**Effective date: November 9, 2026**
+**Effective date: November 10, 2026**
 
 This policy covers the Fitness Tracker Linux application and the website at
 fitness-tracker.luigi311.com. Fitness Tracker is an open-source project maintained
@@ -121,6 +121,9 @@ addresses, requested pages, timestamps, and browser information, to deliver and
 protect the website. Providers may process information outside your country.
 Data sent to an optional integration is handled wherever that service or your
 chosen database is hosted.
+
+App screenshots are served from this website under the same hosting practices
+described above.
 
 ## Contributions and contact
 
