@@ -14,8 +14,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full schema and rules.
 
 ## Local development
 
-You need [Zola](https://www.getzola.org/documentation/getting-started/installation/)
+Use [Zola 0.22.1](https://github.com/getzola/zola/releases/tag/v0.22.1), matching CI,
 and [UV Python](https://docs.astral.sh/uv/getting-started/installation/).
+The syntax-highlighting configuration requires Zola 0.22 or later; older versions
+do not support `[markdown.highlighting]`.
 
 ```sh
 # 1. Install Python deps (one-time)
