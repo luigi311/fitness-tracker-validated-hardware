@@ -129,6 +129,7 @@ th { font-weight: 600; color: var(--text-muted); }
 }
 .site-header nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   align-items: center;
 }
