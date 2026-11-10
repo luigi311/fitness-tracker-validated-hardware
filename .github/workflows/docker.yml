@@ -101,4 +101,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # workflow_run has read-only access to the default-branch cache.
+          # Manual runs can populate it; cache export must not block publishing.
+          cache-to: ${{ github.event_name == 'workflow_dispatch' && 'type=gha,mode=max,ignore-error=true' || '' }}
